@@ -1,5 +1,7 @@
 import { useDispatch } from 'react-redux';
+import { addCustomer } from '../features/customerSlice';
 import { remove } from '../features/reservationSlice';
+import { v4 as uuid } from 'uuid';
 
 interface ReservationCardTypes {
     name: string;
@@ -10,8 +12,14 @@ const ReservationCard = ({name, index}: ReservationCardTypes) => {
     const dispatch = useDispatch();
     const onClick = () => {
         console.log("reservation", name);
-        if(window.confirm(`${name} 예약을 취소하시겠습니까 ?`))
+        if(window.confirm(`${name}을 예약자 명단에 올리시겠습니까 ?`)) {
             dispatch(remove(index));
+            dispatch(addCustomer({
+                id: uuid(),
+                name,
+                food: []
+            }));
+        }
     }
     
     return (
